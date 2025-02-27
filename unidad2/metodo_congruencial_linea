@@ -1,1 +1,33 @@
+import numpy as np
+import scipy.stats as stats
 
+# 1. Generar 100 números aleatorios en el rango [0, 1]
+n = 100
+random_numbers = np.random.uniform(0, 1, n)
+
+# Mostrar los números aleatorios generados
+print("Números aleatorios generados:")
+print(random_numbers)
+
+# 2. Dividir el rango [0, 1] en 10 intervalos ( se puede ajustar segun necesidades)
+intervalos = 10
+observed_counts, bin_edges = np.histogram(random_numbers, bins=intervalos)
+
+# 3. Número esperado en cada intervalo si la distribución es uniforme
+expected_count = n / intervalos  # Deberían caer el mismo número de números en cada intervalo
+
+# 4. Prueba de Chi-Cuadrado
+chi2_statistic, p_value = stats.chisquare(observed_counts, [expected_count]*intervalos)
+
+# 5. Mostrar resultados
+print("\nBins = Categorias:", bin_edges)
+print("\nFrecuencias observadas por intervalo:", observed_counts)
+print("Frecuencia esperada por intervalo:", expected_count)
+print("Chi-Cuadrado:", chi2_statistic)
+print("Valor p:", p_value)
+
+# Interpretación del resultado
+if p_value < 0.05:
+    print("\nRechazamos la hipótesis nula: la distribución no es uniforme.")
+else:
+    print("\nNo podemos rechazar la hipótesis nula: la distribución parece uniforme.")
